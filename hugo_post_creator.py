@@ -27,9 +27,11 @@ class HugoPostCreator(PostCreator):
             translated_p = self.translate_text(paragraph.text)
             description_md += self.converter.handle(translated_p) + '\n\n'
 
+        translated_title = self.translate_text(feed_entry.title)
+
         # Write the post to the HUGO markdown file
         content = f'---\n'
-        content += f'title: "{feed_entry.title}"\n'
+        content += f'title: "{translated_title}"\n'
         content += f'date: {date}\n'
         content += f'draft: false\n'
         content += f'---\n\n'
