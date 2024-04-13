@@ -1,5 +1,4 @@
 import feedparser
-from dataclasses import dataclass
 from article_entity import ArticleEitnty
 
 class RssDownloader:
