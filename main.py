@@ -1,4 +1,4 @@
-from config import *
+import config
 import argparse
 from git_committer import *
 from rss_downloader import *
@@ -12,7 +12,7 @@ def main():
     parser.add_argument("--debug", help="instead of create commit, create debug file output")
     args = parser.parse_args()
 
-    configSuccess = read_config(args.debug)
+    configSuccess = config.read_config(args.debug)
     # Check config variables
     if (not configSuccess):
         print("Please fill the config variables in truth_config.txt")
@@ -24,11 +24,11 @@ def main():
         return
     
     postNum = str(args.postNum)
-    print("Tistory post url: ", url_tistory + postNum)
+    print("Tistory post url: ", config.url_tistory + postNum)
 
     # 1. Create and checkout git branch (not debug mode)
     if (not args.debug):
-        git = GitCommitter(repo_path, github_token, repo_name)
+        git = GitCommitter(config.repo_path, config.github_token, config.repo_name)
         branch_name = git.checkout_n_create_branch(postNum)
 
     # 2. Download article
@@ -38,9 +38,9 @@ def main():
     else:
         articledl = ArticleDownloader()
         article = articledl.download_article(
-            url_tistory + postNum,
-            title_tag_selector,
-            article_tag_selector
+            config.url_tistory + postNum,
+            config.title_tag_selector,
+            config.article_tag_selector
         )
 
     print("Title: ", article.title)
@@ -55,7 +55,7 @@ def main():
 
     # 3. Create post file
     post_creator = HugoPostCreator()
-    post_creator.create_post(article, f'{repo_path}/content/posts/{postNum}.md')
+    post_creator.create_post(article, f'{config.repo_path}/content/posts/{postNum}.md')
 
     # 4. Push to the git repository
     git.commit_and_push_to_postnum_branch(postNum)
