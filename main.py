@@ -53,7 +53,8 @@ def main():
 
     # 3. Create post file
     post_creator = HugoPostCreator()
-    post_creator.create_post(article, f'{config.repo_path}/content/posts/{postNum}.md')
+    postPath = f'{postNum}.md' if args.debug else f'{config.repo_path}/content/posts/{postNum}.md'
+    post_creator.create_post(article, postPath)
 
     # If debug mode, return
     if (args.debug):
