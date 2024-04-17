@@ -40,7 +40,7 @@ class HugoPostCreator(PostCreator):
                 if elem.text.replace('<br>', '').replace('<br/>', '').replace('<br />', '').strip() == '':
                     continue
                 translated_p = self.translate_text(elem.text)
-                description_md += self.converter.handle(translated_p) + '\n\n'
+                description_md += self.converter.handle(translated_p) + '\n'
 
         print("Translating: ", feed_entry.title)
         translated_title = self.translate_text(feed_entry.title)
@@ -52,6 +52,8 @@ class HugoPostCreator(PostCreator):
         content += f'draft: false\n'
         content += f'---\n\n'
         content += f'{description_md}\n\n'
+
+        content += f'Automatically translated using Google Translate and copied by [Truth](https://github.com/jujinkim/truth).\n'
         content += f'Original post: [{feed_entry.link}]({feed_entry.link})'
         with open(path, 'w', encoding='utf-8') as f:
             f.write(content)
