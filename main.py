@@ -46,18 +46,14 @@ def main():
 
     print("Title: ", article.title)
     print("Url: ", article.link)
-    if (args.debug):
-        print("Article: ", article.content[:50])
-        with open('post_debug.md', 'w') as f:
-            f.write(f'# {article.title}\n\n')
-            f.write(f'[Link]({article.link})\n\n')
-            f.write(article.content)
-        return
 
     # 3. Create post file
     post_creator = HugoPostCreator()
     post_creator.create_post(article, f'{config.repo_path}/content/posts/{postNum}.md')
 
+    if (args.debug):
+        return
+    
     # 4. Push to the git repository
     git.commit_and_push_to_postnum_branch(postNum)
 
