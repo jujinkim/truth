@@ -17,7 +17,7 @@ class HugoPostCreator(PostCreator):
 
     def create_post(self, feed_entry, path):
         date = datetime.now(pytz.timezone('Asia/Seoul')).isoformat(timespec='seconds')
-        description_decoded = html.unescape(feed_entry.description)
+        description_decoded = html.unescape(feed_entry.content)
 
         # Translate the description to English and convert to markdown
         soup = BeautifulSoup(description_decoded, 'html.parser')
