@@ -46,14 +46,19 @@ def main():
 
     print("Title: ", article.title)
     print("Url: ", article.link)
+    if (args.debug):
+        # Write downloaded article to debug file
+        with open(f'{postNum}.txt', 'w', encoding='utf-8') as f:
+            f.write(article.title + '\n--------\n' + article.link + '\n--------\n' + article.content)
 
     # 3. Create post file
     post_creator = HugoPostCreator()
     post_creator.create_post(article, f'{config.repo_path}/content/posts/{postNum}.md')
 
+    # If debug mode, return
     if (args.debug):
         return
-    
+
     # 4. Push to the git repository
     git.commit_and_push_to_postnum_branch(postNum)
 
