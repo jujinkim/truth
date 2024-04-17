@@ -8,7 +8,7 @@ from hugo_post_creator import *
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--rss", help="if existed, download the article from the rss url")
-    parser.add_argument("--postNum", type=int, help="the post number of the tistory post")
+    parser.add_argument("postNum", type=int, help="the post number of the tistory post")
     parser.add_argument("--debug", help="instead of create commit, create debug file output")
 
     args = parser.parse_args()
@@ -18,6 +18,11 @@ def main():
     # Check config variables
     if (not configSuccess):
         print("Please fill the config variables in truth_config.txt")
+        return
+    
+    # Check if the post number is valid
+    if (args.postNum < 1):
+        print("Post number should be greater than 0")
         return
 
     # 1. Create and checkout git branch
