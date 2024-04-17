@@ -23,4 +23,4 @@ class ArticleDownloader:
     def _extract_article(self, html, article_tag_selector):
         soup = BeautifulSoup(html, 'html.parser')
         article = soup.select_one(article_tag_selector)
-        return article.text if article else None
+        return str(article) if article else None

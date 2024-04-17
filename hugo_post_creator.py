@@ -18,16 +18,29 @@ class HugoPostCreator(PostCreator):
 
     def create_post(self, feed_entry: ArticleEitnty, path):
         date = datetime.now(pytz.timezone('Asia/Seoul')).isoformat(timespec='seconds')
+        description_md = ''
+
         description_decoded = html.unescape(feed_entry.content)
 
         # Translate the description to English and convert to markdown
         soup = BeautifulSoup(description_decoded, 'html.parser')
-        paragraphs = soup.find_all('p')
-        description_md = ''
-        for paragraph in paragraphs:
-            print("Translating: ", paragraph.text)
-            translated_p = self.translate_text(paragraph.text)
-            description_md += self.converter.handle(translated_p) + '\n\n'
+        elements = soup.find_all(['p', 'a', 'img'])
+        imgCnt = 1
+        for elem in elements:
+            if elem.name == 'img':
+                print("Image: ", elem['src'])
+                imgUrl = elem['src']
+                description_md += f'![Image{imgCnt}]({imgUrl})\n\n'
+                imgCnt += 1
+            elif elem.name == 'a':
+                print("Link: ", elem['href'])
+                description_md += f'[{elem.text}]({elem["href"]})\n\n'
+            elif elem.name == 'p':
+                print("Translating: ", elem.text)
+                if elem.text.replace('<br>', '').replace('<br/>', '').replace('<br />', '').strip() == '':
+                    continue
+                translated_p = self.translate_text(elem.text)
+                description_md += self.converter.handle(translated_p) + '\n\n'
 
         print("Translating: ", feed_entry.title)
         translated_title = self.translate_text(feed_entry.title)
