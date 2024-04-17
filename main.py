@@ -24,7 +24,8 @@ def main():
         return
     
     postNum = str(args.postNum)
-    print("Tistory post url: ", config.url_tistory + postNum)
+    fullUrl = "https://" + config.url_tistory + '/' + postNum
+    print("Tistory post url: ", fullUrl)
 
     # 1. Create and checkout git branch (not debug mode)
     if (not args.debug):
@@ -38,7 +39,7 @@ def main():
     else:
         articledl = ArticleDownloader()
         article = articledl.download_article(
-            config.url_tistory + postNum,
+            fullUrl,
             config.title_tag_selector,
             config.article_tag_selector
         )
