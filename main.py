@@ -1,13 +1,11 @@
 import config
 import argparse
 from git_committer import *
-from rss_downloader import *
 from article_downloader import *
 from hugo_post_creator import *
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--rss", help="if existed, download the article from the rss url")
     parser.add_argument("postNum", type=int, help="the post number of the tistory post")
     parser.add_argument("--debug", help="instead of create commit, create debug file output")
     args = parser.parse_args()
@@ -33,16 +31,12 @@ def main():
         branch_name = git.checkout_n_create_branch(postNum)
 
     # 2. Download article
-    if (args.rss):
-        rssdl = RssDownloader()
-        article = rssdl.get_feed_entries(args.rss, postNum)
-    else:
-        articledl = ArticleDownloader()
-        article = articledl.download_article(
-            fullUrl,
-            config.title_tag_selector,
-            config.article_tag_selector
-        )
+    articledl = ArticleDownloader()
+    article = articledl.download_article(
+        fullUrl,
+        config.title_tag_selector,
+        config.article_tag_selector
+    )
 
     print("Title: ", article.title)
     print("Url: ", article.link)
