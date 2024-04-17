@@ -25,6 +25,14 @@ def read_config(isDebugMode=False):
     except FileNotFoundError:
         pass
 
+    # print the config variables
+    print(f'url_tistory={url_tistory}')
+    print(f'title_tag_selector={title_tag_selector}')
+    print(f'article_tag_selector={article_tag_selector}')
+    print(f'repo_path={repo_path}')
+    print(f'repo_name={repo_name}')
+    print(f'github_token={github_token}')
+
     # write the config variables to truth_config.txt again
     with open('truth_config.txt', 'w') as f:
         f.write(f'url_tistory={url_tistory}\n')
