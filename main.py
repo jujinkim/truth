@@ -45,12 +45,12 @@ def main():
         )
 
     print("Title: ", article.title)
-    print("Url: ", article.url)
+    print("Url: ", article.link)
     if (args.debug):
         print("Article: ", article.content)
         with open('post_debug.md', 'w') as f:
             f.write(f'# {article.title}\n\n')
-            f.write(f'[Link]({article.url})\n\n')
+            f.write(f'[Link]({article.link})\n\n')
             f.write(article.content)
         return
 
