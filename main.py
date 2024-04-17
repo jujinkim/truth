@@ -37,7 +37,11 @@ def main():
         article = rssdl.get_feed_entries(args.rss, postNum)
     else:
         articledl = ArticleDownloader()
-        article = articledl.download_article(url_tistory + postNum)
+        article = articledl.download_article(
+            url_tistory + postNum,
+            title_tag_selector,
+            article_tag_selector
+        )
 
     print("Title: ", article.title)
     print("Url: ", article.url)
