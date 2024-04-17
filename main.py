@@ -6,8 +6,6 @@ from article_downloader import *
 from hugo_post_creator import *
 
 def main():
-    read_config()
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--rss", help="if existed, download the article from the rss url")
     parser.add_argument("--postNum", type=int, help="the post number of the tistory post")
@@ -15,6 +13,12 @@ def main():
 
     args = parser.parse_args()
     print("Tistory post url: ", url_tistory + args.postNum)
+
+    configSuccess = read_config(args.debug)
+    # Check config variables
+    if (not configSuccess):
+        print("Please fill the config variables in truth_config.txt")
+        return
 
     # 1. Create and checkout git branch
     git = GitCommitter(repo_path, github_token, repo_name)
