@@ -17,10 +17,10 @@ class ArticleDownloader:
     def _extract_title(self, html, title_tag_selector):
         soup = BeautifulSoup(html, 'html.parser')
         title = soup.select_one(title_tag_selector)
-        return title.text if title else None
+        return title.text if title else "No title found."
 
     # Extract article content from the given html
     def _extract_article(self, html, article_tag_selector):
         soup = BeautifulSoup(html, 'html.parser')
         article = soup.select_one(article_tag_selector)
-        return str(article) if article else None
+        return str(article) if article else "No article content found."
