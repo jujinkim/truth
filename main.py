@@ -47,7 +47,7 @@ def main():
     print("Title: ", article.title)
     print("Url: ", article.link)
     if (args.debug):
-        print("Article: ", article.content)
+        print("Article: ", article.content[:50])
         with open('post_debug.md', 'w') as f:
             f.write(f'# {article.title}\n\n')
             f.write(f'[Link]({article.link})\n\n')
