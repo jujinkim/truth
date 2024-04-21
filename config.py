@@ -4,6 +4,8 @@ article_tag_selector = "#article-view .tt_article_useless_p_margin.contents_styl
 repo_path = ""
 repo_name = ""
 github_token = ""
+from_lang = 'ko'
+to_lang = 'en'
 
 def read_config(isDebugMode=False):
     try:
@@ -22,6 +24,10 @@ def read_config(isDebugMode=False):
                     globals()[name] = value
                 elif name == 'github_token':
                     globals()[name] = value
+                elif name == 'from_lang':
+                    globals()[name] = value
+                elif name == 'to_lang':
+                    globals()[name] = value
     except FileNotFoundError:
         pass
 
@@ -32,6 +38,8 @@ def read_config(isDebugMode=False):
     print(f'repo_path={repo_path}')
     print(f'repo_name={repo_name}')
     print(f'github_token={github_token}')
+    print(f'from_lang={from_lang}')
+    print(f'to_lang={to_lang}')
 
     # write the config variables to truth_config.txt again
     with open('truth_config.txt', 'w') as f:
@@ -41,14 +49,16 @@ def read_config(isDebugMode=False):
         f.write(f'repo_path={repo_path}\n')
         f.write(f'repo_name={repo_name}\n')
         f.write(f'github_token={github_token}\n')
+        f.write(f'from_lang={from_lang}\n')
+        f.write(f'to_lang={to_lang}\n')
 
     # if isDebugMode, don't check github repo and token
-
-    if isDebugMode:
-        if url_tistory == "" or title_tag_selector == "" or article_tag_selector == "":
-            return False
-    elif url_tistory == "" or title_tag_selector == "" or article_tag_selector == "" or repo_path == "" or repo_name == "" or github_token == "":
+    if url_tistory == "" or title_tag_selector == "" or article_tag_selector == "" or from_lang == "" or to_lang == "":
         return False
+
+    if not isDebugMode:
+        if repo_path == "" or repo_name == "" or github_token == "":
+            return False
     
     return True
     
