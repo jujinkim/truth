@@ -234,3 +234,6 @@ $RECYCLE.BIN/
 
 # Config file
 truth_config.txt
+
+# Test files
+testfiles/

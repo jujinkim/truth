@@ -4,6 +4,8 @@ from git_committer import *
 from article_downloader import *
 from hugo_post_creator import *
 
+testfiles_path = 'testfiles'
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("postNum", type=int, help="the post number of the tistory post")
@@ -42,12 +44,12 @@ def main():
     print("Url: ", article.link)
     if (args.debug):
         # Write downloaded article to debug file
-        with open(f'{postNum}.txt', 'w', encoding='utf-8') as f:
+        with open(f'{testfiles_path}\{postNum}.txt', 'w', encoding='utf-8') as f:
             f.write(article.title + '\n--------\n' + article.link + '\n--------\n' + article.content)
 
     # 3. Create post file
     post_creator = HugoPostCreator()
-    postPath = f'{postNum}.md' if args.debug else f'{config.repo_path}/content/posts/{postNum}.md'
+    postPath = f'{testfiles_path}\{postNum}.md' if args.debug else f'{config.repo_path}/content/posts/{postNum}.md'
     post_creator.create_post(article, postPath)
 
     # If debug mode, return
