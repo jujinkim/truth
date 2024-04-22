@@ -40,7 +40,7 @@ class HugoPostCreator(PostCreator):
 
         # Translate the description to English and convert to markdown
         print("Translating: content")
-        translated_html = self.translate_html(feed_entry.content)
+        translated_html = str(self.translate_html(feed_entry.content)).strip()
         print("Convert to markdown")
         print("Translated HTML: ", translated_html)
         description_md = md(translated_html)
