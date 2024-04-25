@@ -3,6 +3,7 @@ import argparse
 from git_committer import *
 from article_downloader import *
 from hugo_post_creator import *
+import os
 
 testfiles_path = 'testfiles'
 
@@ -28,11 +29,13 @@ def main():
     print("Tistory post url: ", fullUrl)
 
     # 1. Create and checkout git branch (not debug mode)
+    print("Creating and checking out git branch")
     if (not args.debug):
-        git = GitCommitter(config.repo_path, config.github_token, config.repo_name)
+        git = GitCommitter(config.repo_path, config.github_token, config.user_name, config.repo_name)
         branch_name = git.checkout_n_create_branch(postNum)
 
     # 2. Download article
+    print("Downloading article")
     articledl = ArticleDownloader()
     article = articledl.download_article(
         fullUrl,
@@ -41,6 +44,7 @@ def main():
     )
 
     print("Title: ", article.title)
+    print("Year", datetime.fromisoformat(article.published_time).year if article.published_time else datetime.now().year)
     print("Url: ", article.link)
     if (args.debug):
         # Write downloaded article to debug file
@@ -48,8 +52,12 @@ def main():
             f.write(article.title + '\n--------\n' + article.link + '\n--------\n' + article.content)
 
     # 3. Create post file
+    print("Creating post file")
     post_creator = HugoPostCreator()
-    postPath = f'{testfiles_path}\{postNum}.md' if args.debug else f'{config.repo_path}/content/posts/{postNum}.md'
+    debug_file_path = os.path.join(testfiles_path, postNum + '.md')
+    year = str(datetime.fromisoformat(article.published_time).year) if article.published_time else str(datetime.now().year)
+    post_file_path = os.path.join(config.repo_path, 'content', 'post', year, postNum + '.md')
+    postPath = debug_file_path if args.debug else post_file_path
     post_creator.create_post(article, postPath)
 
     # If debug mode, return
@@ -57,10 +65,14 @@ def main():
         return
 
     # 4. Push to the git repository
+    print("Pushing to git repository")
     git.commit_and_push_to_postnum_branch(postNum)
 
     # 5. Create pull request
+    print("Creating pull request")
     git.create_pull_request_n_cleanup(postNum)
+
+    print("Done")
 
 if __name__ == '__main__':
     main()

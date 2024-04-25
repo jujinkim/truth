@@ -7,6 +7,7 @@ from article_entity import ArticleEitnty
 import argostranslate.package, argostranslate.translate
 import translatehtml
 from markdownify import markdownify as md
+import os
 
 class HugoPostCreator(PostCreator):
     def __init__(self):
@@ -59,5 +60,7 @@ class HugoPostCreator(PostCreator):
 
         content += f'Automatically translated using Google Translate and copied by [Truth](https://github.com/jujinkim/truth).\n'
         content += f'Original post: [{feed_entry.link}]({feed_entry.link})'
+
+        os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, 'w', encoding='utf-8') as f:
             f.write(content)

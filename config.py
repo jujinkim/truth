@@ -2,6 +2,7 @@ url_tistory = ""
 title_tag_selector = "article#content .inner h1"
 article_tag_selector = "#article-view .tt_article_useless_p_margin.contents_style"
 repo_path = ""
+user_name = ""
 repo_name = ""
 github_token = ""
 from_lang = 'ko'
@@ -19,6 +20,8 @@ def read_config(isDebugMode=False):
                 elif name == 'article_tag_selector':
                     globals()[name] = value
                 elif name == 'repo_path':
+                    globals()[name] = value
+                elif name == 'user_name':
                     globals()[name] = value
                 elif name == 'repo_name':
                     globals()[name] = value
