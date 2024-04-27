@@ -29,7 +29,7 @@ class GitCommitter:
     def create_pull_request_n_cleanup(self, post_num):
         #create pull request
         g = Github(self.github_token)
-        repo = g.get_repo(self.user_name + "/" + self.repo_name)
+        repo = g.get_user().get_repo(self.repo_name)
         repo.create_pull(title='Add new post: ' + post_num, body='This is an automated pull request', head=self.new_post_branch_prefix + post_num, base='main')
         #cleanup branch
         subprocess.check_output(['git', '-C', self.repo_path, 'checkout', 'main'])
