@@ -54,9 +54,10 @@ def main():
     # 3. Create post file
     print("Creating post file")
     post_creator = HugoPostCreator()
-    debug_file_path = os.path.join(testfiles_path, postNum + '.md')
+    file_name = config.url_tistory.replace('.', '-') + '-' + postNum + '.md'
+    debug_file_path = os.path.join(testfiles_path, file_name)
     year = str(datetime.fromisoformat(article.published_time).year) if article.published_time else str(datetime.now().year)
-    post_file_path = os.path.join(config.repo_path, 'content', 'post', year, postNum + '.md')
+    post_file_path = os.path.join(config.repo_path, 'content', 'post', year, file_name)
     postPath = debug_file_path if args.debug else post_file_path
     post_creator.create_post(article, postPath)
 
