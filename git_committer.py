@@ -3,16 +3,16 @@ import subprocess
 import config
 
 class GitCommitter:
-    new_post_branch_prefix = 'new-post-' + config.url_tistory.replace('.', '-') + '-'
 
     def __init__(self, repo_path, github_token, user_name, repo_name):
         self.repo_path = repo_path
         self.github_token = github_token
         self.repo_name = repo_name
         self.user_name = user_name
+        self.new_post_branch_prefix = 'post/new-post-' + config.url_tistory.replace('.', '-') + '-'
 
     def checkout_n_create_branch(self, post_num):
-        branch_name  = f'new-post-{post_num}'
+        branch_name  = f'{self.new_post_branch_prefix}{post_num}'
         #checkout 'main' and create new branch, if there is already branch, it will checkout to the branch
         subprocess.check_output(['git', '-C', self.repo_path, 'checkout', 'main'])
         try:
