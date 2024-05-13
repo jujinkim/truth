@@ -64,8 +64,15 @@ class HugoPostCreator(PostCreator):
         content += f'---\n\n'
         content += f'{description_md}\n\n'
 
-        content += f'Automatically translated using Google Translate and copied by [Truth](https://github.com/jujinkim/truth).\n'
+        # Add the original post link
+        content += f'---\n'
+        content += '<small>'
+        content += f'Automatically translated using Google Translate and copied by [Truth](https://github.com/jujinkim/truth).\n\n'
         content += f'Original post: [{feed_entry.link}]({feed_entry.link})'
+        content += '</small>'
+
+        # End of document
+        content += f'\n\n---\n\n'
 
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, 'w', encoding='utf-8') as f:
