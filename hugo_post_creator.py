@@ -8,6 +8,7 @@ import argostranslate.package, argostranslate.translate
 import translatehtml
 from markdownify import markdownify as md
 import os
+import re
 
 class HugoPostCreator(PostCreator):
     def __init__(self):
@@ -30,7 +31,23 @@ class HugoPostCreator(PostCreator):
         self.html_translation = from_lang.get_translation(to_lang)
 
     def translate_html(self, html_text):
-        return translatehtml.translate_html(self.html_translation, html_text)
+        translated_text = str(translatehtml.translate_html(self.html_translation, html_text)).strip()
+
+        # Split the text into code blocks and non-code blocks
+        parts = re.split(r'(```.*?```)', translated_text, flags=re.DOTALL)
+
+        # Replace single quotes in non-code blocks
+        for i in range(len(parts)):
+            # If this part is not a code block
+            if not parts[i].startswith('```'):
+                parts[i] = parts[i].replace("'", "`")
+                # Replace pairs of ‘ and ’ with backticks
+                parts[i] = re.sub(r"‘(.*?)’", r"`\1`", parts[i])
+
+        # Join the parts back together
+        translated_text = ''.join(parts)
+
+        return translated_text
 
     def translate_text(self, text):
         return self.translator.translate(text, dest='en').text
@@ -41,7 +58,7 @@ class HugoPostCreator(PostCreator):
 
         # Translate the description to English and convert to markdown
         print("Translating: content")
-        translated_html = str(self.translate_html(feed_entry.content)).strip()
+        translated_html = self.translate_html(feed_entry.content)
         print("Convert to markdown")
         print("Translated HTML: ", translated_html)
         description_md = md(translated_html)
