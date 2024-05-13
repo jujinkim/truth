@@ -84,7 +84,7 @@ class HugoPostCreator(PostCreator):
         # Add the original post link
         content += f'---\n'
         content += '<small>'
-        content += f'Automatically translated using Google Translate and copied by [Truth](https://github.com/jujinkim/truth).\n\n'
+        content += f'Automatically translated using Google Translate and copied by [Truth](https://github.com/jujinkim/truth).  \n'
         content += f'Original post: [{feed_entry.link}]({feed_entry.link})'
         content += '</small>'
 
