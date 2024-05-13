@@ -46,13 +46,19 @@ class HugoPostCreator(PostCreator):
         print("Translated HTML: ", translated_html)
         description_md = md(translated_html)
 
+        # Translate the title to English and format it
         print("Translating: ", feed_entry.title)
-        translated_title = self.translate_text(feed_entry.title)
+        translated_title = self.translate_text(f'"{feed_entry.title}"')
+        print("Translated title: ", translated_title)
+        if not translated_title.startswith('"'):
+            translated_title = f'"{translated_title}'
+        if not translated_title.endswith('"'):
+            translated_title = f'{translated_title}"'
 
         # Write the post to the HUGO markdown file
         print("Writing to file: ", path)
         content = f'---\n'
-        content += f'title: "{translated_title}"\n'
+        content += f'title: {translated_title}\n'
         content += f'date: {date}\n'
         content += f'draft: false\n'
         content += f'---\n\n'
